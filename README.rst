@@ -13,6 +13,7 @@ TOPAZ can be installed with pip:
 The developement version is avaliable by cloning this repository:
 
 ::
-    git clone https://github.com/abatten/topaz
-    cd topaz
-    pip install -e .
+
+  git clone https://github.com/abatten/topaz
+  cd topaz
+  pip install -e .
