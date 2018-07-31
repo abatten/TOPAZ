@@ -1,3 +1,7 @@
 numpy
 scipy
 astropy
+pynbody
+matplotlib
+h5py
+trident
