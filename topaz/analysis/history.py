@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from __future__ import print_function
 
 import os
@@ -35,38 +36,36 @@ def weighted_mean(snaplist, ion="HI", weighting=None, verbose=False, **kwargs):
     weighting : string or None
         The weighting scheme of the particles.
         "volume", "mass" or None (default)
-    
+
     verbose : boolean
         If True, print progress information.
         False (default)
-        
 
     Returns:
     --------
     redshift : numpy array
-        The redshifts of the snapshots 
+        The redshifts of the snapshots
 
     weighted_mean : numpy array
         The mean HI fraction at each of the redshifts
     """
 
     if verbose:
-       print("****")
-       print("Hang on tight, this could take a little while.")
-       print("****")
+        print("****")
+        print("Hang on tight, this could take a little while.")
+        print("****")
 
     weighted_mean = []
     redshift = []
 
-    for snap in tqdm(snaplist, desc=ion, disable = not verbose):
-        #snap = snaplist[i]
+    for snap in tqdm(snaplist, desc=ion, disable=not verbose):
         snap_suffix = snap.split("_")[-1]
         snap_file = "{0}/snap_{1}".format(snap, snap_suffix)
 
         s = pn.load(snap_file)
 
-        apion ="ap{0}".format(ion) 
-        
+        apion = "ap{0}".format(ion)
+
         if weighting == "volume":
             weighted_mean.append(weight.volume_weight(s, s.g[apion]))
 
@@ -76,4 +75,3 @@ def weighted_mean(snaplist, ion="HI", weighting=None, verbose=False, **kwargs):
         redshift.append(s.properties["Redshift"])
 
     return np.array(redshift), np.array(weighted_mean)
-
