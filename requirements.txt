@@ -5,3 +5,4 @@ pynbody
 matplotlib
 h5py
 trident
+tqdm
