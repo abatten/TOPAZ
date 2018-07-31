@@ -1,3 +1,10 @@
+"""
+Functions to calculate weighted averages
+"""
+from __future__ import print_function
+
+import numpy as np
+
 def volume_weight(quant, sim):
     """
     Volume weights the quantity 'quant' in the simulation.
