@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Setup file for borealis
+Setup file for the Aurora plotting package: TOPAZ
 """
 import setuptools
 
@@ -16,7 +16,7 @@ setuptools.setup(
     description="A plotting package for the Aurora simulations using pynbody",
     long_description=long_description,
     long_description_content_type="text/x-rst",
-    url="https://github.com/abatten/TOPAZ",
+    url="https://github.com/abatten/topaz",
     packages=setuptools.find_packages(),
     classifiers=(
         "Programming Language :: Python :: 3",
