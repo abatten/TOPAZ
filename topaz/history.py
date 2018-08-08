@@ -17,7 +17,7 @@ import pynbody.analysis.cosmology as cosmology
 import pynbody.plot.sph as sph
 from tqdm import tqdm
 
-import weight
+from . import weight
 
 
 def weighted_mean(snaplist, ion="HI", weighting=None, verbose=False, **kwargs):
