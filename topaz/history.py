@@ -20,7 +20,7 @@ from tqdm import tqdm
 from . import weight
 
 
-def weighted_mean(snaplist, ion="HI", weighting=None, verbose=False, **kwargs):
+def ion_mean(snaplist, ion="HI", weighting=None, verbose=False, **kwargs):
     """
     Calculated the weighted mean fraction as a function of redshift.
 
