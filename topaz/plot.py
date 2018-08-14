@@ -98,10 +98,10 @@ def metal_map(sim, metal, **kwargs):
 
 def ion_history(redshifts=None, ion_history=None, snapshots=None, 
                 ion="HI", weighting="volume", half_line=False,
-                verbose=False, **kwargs):
+                verbose=False, return_arrays=False, **kwargs):
 
     if snapshots is not None:
-        redshifts, ion_history = history.weighted_mean(snapshots, ion,  weighting, verbose)
+        redshifts, ion_history = history.ion_mean(snapshots, ion,  weighting, verbose)
 
     if ion_history is None and redshifts is None:
         print("If HI history and redshifts are not provided, then snapshots must be.")
@@ -117,7 +117,10 @@ def ion_history(redshifts=None, ion_history=None, snapshots=None,
     ax.set_ylabel(r"$<x_\mathrm{{{0}}}>$".format(ion), fontsize=20)
     plt.legend(fontsize=14, frameon=False)
 
-    return(fig, ax)
+    if return_arrays:
+        return (fig, ax, redshifts, ion_history)
+    else:
+        return(fig, ax)
 
 
 
