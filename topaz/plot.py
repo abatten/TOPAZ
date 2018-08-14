@@ -21,7 +21,7 @@ import pynbody.plot.sph as sph
 from pynbody.snapshot.gadgethdf import SubFindHDFSnap
 from pynbody.snapshot.gadgethdf import GadgetHDFSnap
 
-from . import weight, history
+from . import weight, analysis
 
 mpl.rc("xtick", labelsize=12)
 mpl.rc("ytick", labelsize=12)
@@ -101,7 +101,7 @@ def ion_history(redshifts=None, ion_history=None, snapshots=None,
                 verbose=False, return_arrays=False, **kwargs):
 
     if snapshots is not None:
-        redshifts, ion_history = history.ion_mean(snapshots, ion,  weighting, verbose)
+        redshifts, ion_history = analysis.ion_mean(snapshots, ion,  weighting, verbose)
 
     if ion_history is None and redshifts is None:
         print("If HI history and redshifts are not provided, then snapshots must be.")
