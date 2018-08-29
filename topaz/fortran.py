@@ -48,5 +48,4 @@ def readf(loc, ion='h1',cloudy='hm12', verbose=False, log=False):
             for i in range(3):
                 if len(np.where(ionbal < 0)[i]) > 0:
                     raise Exception(ion + ": This is a log file without log in file name") 
-
-return ionbal, zarr, tarr, rarr
+    return ionbal, zarr, tarr, rarr

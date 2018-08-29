@@ -10,7 +10,7 @@ with open("README.rst", "r") as fh:
 
 setuptools.setup(
     name="topaz",
-    version="0.0.1",
+    version="0.0.7",
     author="Adam Batten",
     author_email="adamjbatten@gmail.com",
     description="A plotting package for the Aurora simulations using pynbody",

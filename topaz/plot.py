@@ -38,14 +38,14 @@ def rho_slice(sim, resolution=1000, cmap="inferno",
     Make a density slice plot
     """
     
-    redshift = sim.properties['Redshift']
-    boxsize = sim.properties["boxsize"]
+    redshift = sim.properties['Redshift'] 
+    boxsize = sim.properties["boxsize"] 
 
     im = sph.image(sim.g, width=boxsize, resolution=resolution, 
                        cmap=cmap, units=units, show_cbar=show_cbar, **kwargs)
  
     if not show_cbar:
-        cbar = plt.colorbar(ax=ax)
+        cbar = plt.colorbar()
         cbar.set_label(label=r"$\rho\ (\mathrm{M_\odot\ kpc^{-3}})$", fontsize=20)
     
     plt.ylabel(r"$y\ (\mathrm{cMpc})$", fontsize=20)
@@ -82,18 +82,17 @@ def metal_map(sim, metal, **kwargs):
     metallicity = "{0}XH".format(metal)
     if metal_tot != 0:
         im = sph.image(sim.g, qty=metallicity, width=sim.properties["boxsize"],
-                  cmap="inferno", show_cbar=False, approximate_fast=False, 
+                  cmap="RdPu", show_cbar=False, approximate_fast=False, 
                   **kwargs)
         cbar = plt.colorbar()
         cbar.set_label(label="[{0}/{1}]".format(metal, "H"), fontsize=16)
         plt.title("z = {1: .3f}".format(metal, redshift), fontsize=18)
         plt.ylabel(r"$y\ (\mathrm{cMpc})$", fontsize=16)
         plt.xlabel(r"$x\ (\mathrm{cMpc})$", fontsize=16)
+        return(im)
     else:
         print("Zero metals found! Can not make metallicity \
               plot for: {0}".format(sim))
-
-        return(im)
 
 
 def ion_history(redshifts=None, ion_history=None, snapshots=None, 
