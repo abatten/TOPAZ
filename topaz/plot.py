@@ -41,11 +41,11 @@ def rho_slice(sim, resolution=1000, cmap="inferno",
     redshift = sim.properties['Redshift']
     boxsize = sim.properties["boxsize"]
 
-    im = pn.plot.image(sim.g, width=boxsize, resolution=resolution, 
+    im = sph.image(sim.g, width=boxsize, resolution=resolution, 
                        cmap=cmap, units=units, show_cbar=show_cbar, **kwargs)
  
     if not show_cbar:
-        cbar = plt.colorbar()
+        cbar = plt.colorbar(ax=ax)
         cbar.set_label(label=r"$\rho\ (\mathrm{M_\odot\ kpc^{-3}})$", fontsize=20)
     
     plt.ylabel(r"$y\ (\mathrm{cMpc})$", fontsize=20)
@@ -60,7 +60,7 @@ def rho_proj(sim, resolution=1000, cmap="inferno",
     redshift = sim.properties['Redshift']
     boxsize = sim.properties["boxsize"]
  
-    im = pn.plot.image(sim.g, width=boxsize, resolution=resolution, 
+    im = sph.image(sim.g, width=boxsize, resolution=resolution, 
                        cmap=cmap, units=units, show_cbar=show_cbar, **kwargs)
  
     if not show_cbar:
