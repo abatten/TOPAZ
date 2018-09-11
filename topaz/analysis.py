@@ -1,23 +1,27 @@
 #!/usr/bin/env python
 from __future__ import print_function
 
-import os
-import imp
-import sys
-import glob
 import numpy as np
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-from astropy import units as u
-import astropy.coordinates as coord
-
 import pynbody as pn
-import pynbody.analysis.profile as profile
-import pynbody.analysis.cosmology as cosmology
-import pynbody.plot.sph as sph
 from tqdm import tqdm
 
-from . import weight
+
+def weight(sim, quant, weight_type="mass"):
+    """
+    Volume weights the quantity 'quant' in the simulation.
+    """
+    if weight_type == "mass" or weight_type is None:
+        pmass = sim.g["Mass"].in_units("m_p")
+        total_mass = np.sum(pmass)
+        weighted_quant = np.sum(quant * pmass / total_mass)
+
+    elif weight_type == "volume":
+        pmass = sim.g["Mass"].in_units("m_p")
+        pvol = pmass / sim.g["Density"].in_units("m_p cm**-3")
+        total_vol = np.sum(pvol)
+        weighted_quant = np.sum(quant * pvol / total_vol)
+
+    return weighted_quant
 
 
 def ion_mean(snaplist, ion="HI", weighting=None, verbose=False, **kwargs):
@@ -61,17 +65,13 @@ def ion_mean(snaplist, ion="HI", weighting=None, verbose=False, **kwargs):
     for snap in tqdm(snaplist, desc=ion, disable=not verbose):
         snap_suffix = snap.split("_")[-1]
         snap_file = "{0}/snap_{1}".format(snap, snap_suffix)
-
         s = pn.load(snap_file)
-
         apion = "ap{0}".format(ion)
-
-        if weighting == "volume":
-            weighted_mean.append(weight.volume_weight(s, s.g[apion]))
-
-        elif weighting == "mass" or weighting is None:
-            weighted_mean.append(weight.mass_weight(s, s.g[apion]))
-
+        weighted_mean.append(weight(s, s.g[apion], weight_type=weighting))
         redshift.append(s.properties["Redshift"])
 
     return np.array(redshift), np.array(weighted_mean)
+
+
+def create_los(snapshot, ray_start, ray_end):
+    return None
