@@ -21,7 +21,8 @@ import pynbody.plot.sph as sph
 from pynbody.snapshot.gadgethdf import SubFindHDFSnap
 from pynbody.snapshot.gadgethdf import GadgetHDFSnap
 
-from . import weight, analysis
+from . import analysis
+from . import constants as c
 
 mpl.rc("xtick", labelsize=12)
 mpl.rc("ytick", labelsize=12)
@@ -33,11 +34,11 @@ plt.rcParams['text.usetex'] = True
 
 
 def rho_slice(sim, resolution=1000, cmap="inferno",
-              units="Msol kpc^-3", show_cbar=False, **kwargs):
+              units="Msol kpc^-3", show_cbar=False,
+              ax_passed=None, **kwargs):
     """
     Make a density slice plot
     """
-    
     redshift = sim.properties['Redshift'] 
     boxsize = sim.properties["boxsize"] 
 
@@ -97,7 +98,8 @@ def metal_map(sim, metal, **kwargs):
 
 def ion_history(redshifts=None, ion_history=None, snapshots=None, 
                 ion="HI", weighting="volume", half_line=False,
-                verbose=False, return_arrays=False, **kwargs):
+                verbose=False, return_arrays=False,
+                ax_passed=None, **kwargs):
 
     if snapshots is not None:
         redshifts, ion_history = analysis.ion_mean(snapshots, ion,  weighting, verbose)
@@ -107,7 +109,11 @@ def ion_history(redshifts=None, ion_history=None, snapshots=None,
         print(" ")
         sys.exit(1)
 
-    fig, ax = plt.subplots(1, figsize=(6, 4))
+    if ax_passed:
+        ax = ax_passed
+    else:
+        fig, ax = plt.subplots(1, figsize=(6, 4))
+
     ax.plot(redshifts, ion_history, "-b", label=r"Aurora")
     if half_line:
         # 50% ionised horizontal line
@@ -124,49 +130,49 @@ def ion_history(redshifts=None, ion_history=None, snapshots=None,
 
 
 # There were taken from Pynbody gadgethdf.py 2018-08-13
-XSOLH=0.70649785
-XSOLHe=0.28055534
-XSOLC=2.0665436E-3
-XSOLN=8.3562563E-4
-XSOLO=5.4926244E-3
-XSOLNe=1.4144605E-3
-XSOLMg=5.907064E-4
-XSOLSi=6.825874E-4
-XSOLS=4.0898522E-4
-XSOLCa=6.4355E-5
-XSOLFe=1.1032152E-3
+XSOLH = 0.70649785
+XSOLHe = 0.28055534
+XSOLC = 2.0665436E-3
+XSOLN = 8.3562563E-4
+XSOLO = 5.4926244E-3
+XSOLNe = 1.4144605E-3
+XSOLMg = 5.907064E-4
+XSOLSi = 6.825874E-4
+XSOLS = 4.0898522E-4
+XSOLCa = 6.4355E-5
+XSOLFe = 1.1032152E-3
 
 @GadgetHDFSnap.derived_quantity
 @SubFindHDFSnap.derived_quantity
 def CXH(sim):
-    return (sim.g["C"] / sim.g["H"]) / (XSOLC/XSOLH)
+    return (sim.g["C"] / sim.g["H"]) / (c.XSOLC/c.XSOLH)
 
 @GadgetHDFSnap.derived_quantity
 @SubFindHDFSnap.derived_quantity
 def HeXH(sim):
-    return sim.g["He"] / sim.g["H"] / (XSOLHe/XSOLH)
+    return sim.g["He"] / sim.g["H"] / (c.XSOLHe/c.XSOLH)
 
 @GadgetHDFSnap.derived_quantity
 @SubFindHDFSnap.derived_quantity
 def FeXH(sim):
-    return sim.g["Fe"] / sim.g["H"] / (XSOLFe/XSOLH) 
+    return sim.g["Fe"] / sim.g["H"] / (c.XSOLFe/c.XSOLH) 
 
 @GadgetHDFSnap.derived_quantity
 @SubFindHDFSnap.derived_quantity
 def MgXH(sim):
-    return sim.g["Mg"] / sim.g["H"] / (XSOLMg/XSOLH)
+    return sim.g["Mg"] / sim.g["H"] / (c.XSOLMg/c.XSOLH)
 
 @GadgetHDFSnap.derived_quantity
 @SubFindHDFSnap.derived_quantity
 def NXH(sim):
-    return sim.g["N"] / sim.g["H"] / (XSOLN/XSOLH)
+    return sim.g["N"] / sim.g["H"] / (c.XSOLN/c.XSOLH)
 
 @GadgetHDFSnap.derived_quantity
 @SubFindHDFSnap.derived_quantity
 def OXH(sim):
-    return sim.g["O"] / sim.g["H"] / (XSOLO/XSOLH)
+    return sim.g["O"] / sim.g["H"] / (c.XSOLO/c.XSOLH)
 
 @GadgetHDFSnap.derived_quantity
 @SubFindHDFSnap.derived_quantity
 def SiXH(sim):
-    return sim.g["Si"] / sim.g["H"] / (XSOLSi/XSOLH)
+    return sim.g["Si"] / sim.g["H"] / (c.XSOLSi/c.XSOLH)
