@@ -3,10 +3,18 @@
 """
 Setup file for the Aurora plotting package: TOPAZ
 """
+import os
+import subprocess
 import setuptools
 
 with open("README.rst", "r") as fh:
     long_description = fh.read()
+
+
+setup_file = os.path.realpath(__file__)
+data_dir = os.path.join(setup_file.rsplit("/", 1)[0], "data")
+
+subprocess.run(["yt", "config", "set", "yt", "test_data_dir", data_dir])
 
 setuptools.setup(
     name="topaz",
