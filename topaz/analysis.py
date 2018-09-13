@@ -6,58 +6,83 @@ import pynbody as pn
 from tqdm import tqdm
 
 
-def weight(sim, quant, weight_type="mass"):
+def weight(snapshot, qty, weight_type="volume"):
     """
-    Volume weights the quantity 'quant' in the simulation.
+    Weights the quantity 'qty' in the simulation.
+
+    Parameters
+    ----------
+
+    snapshot : pynbody.snapshot
+
+        The snapshot that will have its quantity weighted.
+
+    qty : pynbody.array.SimArray
+    
+        The quantity to calculated the weighted. This is usually specified by
+        using something similar to: s.g['rho']
+
+    weight_type : {'mass', 'volume', None}, optional
+
+        Which type of weighting to perform on the quantity. At the moment 
+        mass weighting and no weighting are the same. This is corrent for 
+        simulations where all the particles are the same mass.
+        Default: 'volume'
+
+    Returns
+    -------
+
+    weighted_qty : pynbody.array.SimArray
+        The weighted quantity
     """
     if weight_type == "mass" or weight_type is None:
-        pmass = sim.g["Mass"].in_units("m_p")
+        pmass = snapshot.g["Mass"].in_units("m_p")
         total_mass = np.sum(pmass)
-        weighted_quant = np.sum(quant * pmass / total_mass)
+        weighted_quant = np.sum(qty * pmass / total_mass)
 
     elif weight_type == "volume":
-        pmass = sim.g["Mass"].in_units("m_p")
-        pvol = pmass / sim.g["Density"].in_units("m_p cm**-3")
+        pmass = snapshot.g["Mass"].in_units("m_p")
+        pvol = pmass / snapshot.g["Density"].in_units("m_p cm**-3")
         total_vol = np.sum(pvol)
-        weighted_quant = np.sum(quant * pvol / total_vol)
+        weighted_quant = np.sum(qty * pvol / total_vol)
 
-    return weighted_quant
+    return weighted_qty
 
 
-def ion_mean(snaplist, ion="HI", weighting=None, verbose=False, **kwargs):
+def ion_mean(snapshot_list, ion="HI", weighting=None, verbose=False, **kwargs):
     """
     Calculated the weighted mean fraction as a function of redshift.
 
     Parameters
     ----------
     snaplist : list of strings
+
         A list containing the paths for each snapshot.
 
-    ion : string
+    ion : string, optional
+
         The ion to calculate the weighted mean abundance.
-        Options: HI, HeI, HeII
+        Options: HI, HeI, HeII (Default: HI)
 
-    weighting : string or None
-        The weighting scheme of the particles.
-        "volume", "mass" or None (default)
+    weighting : {'mass', 'volume', None}, optional
 
-    verbose : boolean
+        The weighting scheme of the particles. Default: None
+
+    verbose : boolean, optional
+
         If True, print progress information.
-        False (default)
+        (Default: False)
 
     Returns:
     --------
-    redshift : numpy array
-        The redshifts of the snapshots
+    redshift : numpy.darray
 
-    weighted_mean : numpy array
-        The mean HI fraction at each of the redshifts
+        A numpy array containing the redshifts of each snapshot.
+
+    weighted_mean : numpy.darray
+
+        The mean ion fraction at each of the redshifts
     """
-
-    if verbose:
-        print("****")
-        print("Hang on tight, this could take a little while.")
-        print("****")
 
     weighted_mean = []
     redshift = []
@@ -71,7 +96,3 @@ def ion_mean(snaplist, ion="HI", weighting=None, verbose=False, **kwargs):
         redshift.append(s.properties["Redshift"])
 
     return np.array(redshift), np.array(weighted_mean)
-
-
-def create_los(snapshot, ray_start, ray_end):
-    return None
