@@ -126,8 +126,11 @@ def random_ray(dataset_file, output_data_dir="", axis="z",
         ray_start = [xi, yi, zi]
         ray_end = [xf, yf, zf]
 
+    #line_list = ["H I", "H II", "He I", "He II", "He III"]
+
     line_list = ["H", "He"]
 
+    #  Determine which two axis to add to filename
     xyz = ["x", "y", "z"]
     xyz.remove(axis)
 
@@ -149,13 +152,37 @@ def random_ray(dataset_file, output_data_dir="", axis="z",
         return None
   
   
-def make_n_random_rays(dataset_file, n, output_data_dir,
+def make_n_random_rays(dataset_file, n, output_data_dir, ray_prefix="Ray",
                        verbose=False):
 
+    """
+    Generate n random rays with the rays.random_ray function.
 
-    #ray_pbar = tqdm(range(n), disable=not verbose)
+    Parameters
+    ----------
+    dataset_file : string or YT Dataset object
+        
+        Either a YT dataset object or the filename of a dataset on disk.
+
+    n : integer
+
+        The number of random rays to generate.
+
+    output_data_dir : string
+        
+        The location on disk where the data from the generated rays will be
+        saved as a HDF5 file.
+
+    ray_prefix : optional, string
+        
+        The ray_prefix will becone the first part of the filename when the 
+        rays are saved. Default: 'Ray'
+
+    verbose : optional, boolean
+        Default: False
+    """
+
     for i in tqdm(range(n), desc="Generating Random Ray"):
-        #pbar.set_description()
         random_ray(dataset_file, 
                    output_data_dir, 
                    ray_prefix="Ray_Aurora_L012N0128",
