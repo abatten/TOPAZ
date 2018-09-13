@@ -14,6 +14,7 @@ with open("README.rst", "r") as fh:
 setup_file = os.path.realpath(__file__)
 data_dir = os.path.join(setup_file.rsplit("/", 1)[0], "data")
 
+#  Set the yt test_data_dir to the data directory in trident
 subprocess.run(["yt", "config", "set", "yt", "test_data_dir", data_dir])
 
 setuptools.setup(
