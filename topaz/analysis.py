@@ -5,6 +5,9 @@ import numpy as np
 import pynbody as pn
 from tqdm import tqdm
 
+import h5py
+
+from . import constants as c
 
 def weight(snapshot, qty, weight_type="volume"):
     """
@@ -96,3 +99,19 @@ def ion_mean(snapshot_list, ion="HI", weighting=None, verbose=False, **kwargs):
         redshift.append(s.properties["Redshift"])
 
     return np.array(redshift), np.array(weighted_mean)
+
+
+def calc_DM(ray):
+    data = h5py.File(ray, "r")
+    dl = np.array(data["grid"]["dl"]) * c.CM_TO_PC
+
+    #  1 electron from H II and He II and 2 electrons from He III
+    ne = (np.array(data["grid"]["H_p1_number_density"]) +
+          np.array(data["grid"]["He_p1_number_density"]) +
+          2 * np.array(data["grid"]["He_p2_number_density"]))
+
+    DM = np.sum(ne * dl)
+
+    return DM
+
+
